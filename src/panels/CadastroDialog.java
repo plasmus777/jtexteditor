@@ -106,7 +106,7 @@ public class CadastroDialog extends JDialog {
           dispose();
         }
         else
-          JOptionPane.showMessageDialog(CadastroDialog.this, "Passwords do not match.",
+          JOptionPane.showMessageDialog(CadastroDialog.this, "Password does not match.",
               "Cadastro", JOptionPane.ERROR_MESSAGE);
       }
     });

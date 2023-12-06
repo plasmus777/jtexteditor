@@ -3,6 +3,7 @@ package panels;
 import java.awt.AWTKeyStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.KeyboardFocusManager;
@@ -12,6 +13,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -262,6 +264,27 @@ public class GT_Notes extends JFrame {
 		mnNewMenu.add(chckbxmntmDarkTheme);
 		
 		toolBar.add(mnAjuda);
+		
+		JMenuItem mntmNewMenuItem_5 = new JMenuItem("About the Program");
+		mntmNewMenuItem_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null,"GT Notes is a simple text editor written in java, bringing basic text editing functionality and multiple document management. The project can be seen on https://github.com/plasmus777/jtexteditor.", "About the Program", 1);
+			}
+		});
+		mnAjuda.add(mntmNewMenuItem_5);
+		
+		JMenuItem mntmNewMenuItem_6 = new JMenuItem("Report issues");
+		mntmNewMenuItem_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+			        Desktop.getDesktop().browse(new URL("https://github.com/plasmus777/jtexteditor/issues").toURI());
+			    } catch (Exception exc) {
+			    	JOptionPane.showMessageDialog(null,"Could not load the issues webpage.", "An error ocurred.", 0);
+			        exc.printStackTrace();
+			    }
+			}
+		});
+		mnAjuda.add(mntmNewMenuItem_6);
 		
 		btnUser = new JButton("Sign in");
 		btnUser.addActionListener(new ActionListener() {
