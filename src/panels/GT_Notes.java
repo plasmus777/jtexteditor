@@ -18,7 +18,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.Box;
-import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -38,6 +37,8 @@ import main.NotePanel;
 import user.UserRegistry;
 import java.awt.Dimension;
 import javax.swing.JCheckBoxMenuItem;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class GT_Notes extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -93,6 +94,12 @@ public class GT_Notes extends JFrame {
 	}
 	
 	public GT_Notes() {
+		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				getCurrentNote().processKeyShortcuts(e);
+			}
+		});
 		
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -100,12 +107,8 @@ public class GT_Notes extends JFrame {
 				while(getCurrentNote() != null) {
 					if(getCurrentNote().hasChanges) {
 						int option = JOptionPane.showConfirmDialog(null, "Do you want to save all changes before exiting?", "Document not saved", JOptionPane.YES_NO_CANCEL_OPTION);
-						switch(option) {
-							case 0:
-								getCurrentNote().salvar();
-							case 2:
-								return;
-						}
+						if(option == 0) getCurrentNote().salvar();
+						else if (option == 2)return;
 					}
 					
 					if(tabbedPane.getTabCount() == 1) {
@@ -146,7 +149,8 @@ public class GT_Notes extends JFrame {
 
 		tabbedPane = new JTabbedPane(JTabbedPane.BOTTOM);
 		
-		setupTabTraversalKeys(tabbedPane);
+		modifyTabKey(tabbedPane);
+		tabbedPane.setTabLayoutPolicy(1);
 		tabbedPane.setBorder(new EmptyBorder(0, 0, 1, 1));
 		tabbedPane.add(new NotePanel(darkMode()) , "New Document");
 		contentPane.add(tabbedPane);
@@ -273,7 +277,7 @@ public class GT_Notes extends JFrame {
 		});
 		mnAjuda.add(mntmNewMenuItem_5);
 		
-		JMenuItem mntmNewMenuItem_6 = new JMenuItem("Report issues");
+		JMenuItem mntmNewMenuItem_6 = new JMenuItem("Report Issues");
 		mntmNewMenuItem_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -300,25 +304,18 @@ public class GT_Notes extends JFrame {
 		toolBar.add(rigidArea);
 	}
 	
-	private static void setupTabTraversalKeys(JTabbedPane tabbedPane)
-	  {
-	    KeyStroke ctrlTab = KeyStroke.getKeyStroke("ctrl TAB");
-	    KeyStroke ctrlShiftTab = KeyStroke.getKeyStroke("ctrl shift TAB");
-	 
-	    // Remove ctrl-tab from normal focus traversal
-	    Set<AWTKeyStroke> forwardKeys = new HashSet<AWTKeyStroke>(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
-	    forwardKeys.remove(ctrlTab);
-	    tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
-	 
-	    // Remove ctrl-shift-tab from normal focus traversal
-	    Set<AWTKeyStroke> backwardKeys = new HashSet<AWTKeyStroke>(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
-	    backwardKeys.remove(ctrlShiftTab);
-	    tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);
-	 
-	    // Add keys to the tab's input map
-	    InputMap inputMap = tabbedPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-	    inputMap.put(ctrlTab, "navigateNext");
-	    inputMap.put(ctrlShiftTab, "navigatePrevious");
+	public static void modifyTabKey(JTabbedPane tabbedPane){
+		KeyStroke previous = KeyStroke.getKeyStroke("ctrl shift TAB");
+		KeyStroke next = KeyStroke.getKeyStroke("ctrl TAB");
+	    
+		Set<AWTKeyStroke> previousKeys = new HashSet<AWTKeyStroke>(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
+		Set<AWTKeyStroke> nextKeys = new HashSet<AWTKeyStroke>(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+		
+		previousKeys.remove(previous);
+		nextKeys.remove(next);
+		
+		tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, previousKeys);
+		tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, nextKeys);
 	  }
 	
 	public static NotePanel getCurrentNote() {

@@ -67,46 +67,7 @@ public class NotePanel extends JPanel {
 				textArea.addKeyListener(new KeyAdapter() {
 					@Override
 					public void keyPressed(KeyEvent arg0) {
-						textArea.getHighlighter().removeAllHighlights();
-						if(arg0.isControlDown()) {
-							switch(arg0.getKeyCode()) {
-							case KeyEvent.VK_S:
-								if(arg0.isShiftDown())salvarComo();
-								else salvar();
-								return;
-							case KeyEvent.VK_O:
-								abrir();
-								return;
-							case KeyEvent.VK_N:
-								novo();
-								return;
-							case KeyEvent.VK_T:
-								GT_Notes.addNote(new NotePanel(GT_Notes.darkMode()), "New Document");
-								return;
-							case KeyEvent.VK_W:
-								if(GT_Notes.getCurrentNote().hasChanges) {
-									int option = JOptionPane.showConfirmDialog(null, "Do you want to save all changes before exiting?", "Document not saved", JOptionPane.YES_NO_OPTION);
-									if(option == 0) {
-										if(GT_Notes.getCurrentNote() != null)GT_Notes.getCurrentNote().salvar();
-									}
-								}
-								if(GT_Notes.ur.getCurrentUser() != null)GT_Notes.ur.removeNoteFromCurrentUser(GT_Notes.getCurrentNote().filePath);
-								GT_Notes.removeCurrentNote(true);
-								GT_Notes.ur.saveUsers();
-								return;
-							case KeyEvent.VK_Z:
-								 undo();
-								return;
-							case KeyEvent.VK_F:
-								GT_Notes.search.setVisible(true);
-								return;
-							default:
-								return;
-							}
-						}
-						if(!arg0.isActionKey()) {
-							hasChanges = true;
-						}
+						processKeyShortcuts(arg0);
 					}
 				});
 		
@@ -267,6 +228,50 @@ public class NotePanel extends JPanel {
 			textArea.setSelectionColor(Color.BLACK);
 			textArea.setForeground(Color.BLACK);
 			GT_Notes.tabbedPane.setBackground(Color.WHITE);
+		}
+	}
+	
+	public void processKeyShortcuts(KeyEvent arg0) {
+		textArea.getHighlighter().removeAllHighlights();
+		if(arg0.isControlDown()) {
+			switch(arg0.getKeyCode()) {
+			case KeyEvent.VK_S:
+				if(arg0.isShiftDown())salvarComo();
+				else salvar();
+				return;
+			case KeyEvent.VK_O:
+				abrir();
+				return;
+			case KeyEvent.VK_N:
+				novo();
+				return;
+			case KeyEvent.VK_T:
+				GT_Notes.addNote(new NotePanel(GT_Notes.darkMode()), "New Document");
+				GT_Notes.tabbedPane.setSelectedIndex(GT_Notes.tabbedPane.getSelectedIndex() + 1);
+				return;
+			case KeyEvent.VK_W:
+				if(GT_Notes.getCurrentNote().hasChanges) {
+					int option = JOptionPane.showConfirmDialog(null, "Do you want to save all changes before exiting?", "Document not saved", JOptionPane.YES_NO_OPTION);
+					if(option == 0) {
+						if(GT_Notes.getCurrentNote() != null)GT_Notes.getCurrentNote().salvar();
+					}
+				}
+				if(GT_Notes.ur.getCurrentUser() != null)GT_Notes.ur.removeNoteFromCurrentUser(GT_Notes.getCurrentNote().filePath);
+				GT_Notes.removeCurrentNote(true);
+				GT_Notes.ur.saveUsers();
+				return;
+			case KeyEvent.VK_Z:
+				 undo();
+				return;
+			case KeyEvent.VK_F:
+				GT_Notes.search.setVisible(true);
+				return;
+			default:
+				return;
+			}
+		}
+		if(!arg0.isActionKey()) {
+			hasChanges = true;
 		}
 	}
 }

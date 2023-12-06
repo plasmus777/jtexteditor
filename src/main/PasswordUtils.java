@@ -49,11 +49,4 @@ public class PasswordUtils {
     return optEncrypted.get().equals(key);
   }
 
-  public static void main(String[] args) {
-    String salt = generateSalt(512).get();
-    String password = "Of Salesmen!";
-    String key = hashPassword(password, salt).get();
-    System.out.println(verifyPassword("Of Salesmen!", key, salt));
-  }
-
 }

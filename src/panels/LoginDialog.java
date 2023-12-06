@@ -48,35 +48,20 @@ public class LoginDialog extends JDialog {
     cs.gridx = 1;
     cs.gridy = 1;
     cs.gridwidth = 2;
+    pfPassword.addKeyListener(new KeyAdapter() {
+		@Override
+		public void keyPressed(KeyEvent arg0) {
+			if(arg0.getKeyCode() == KeyEvent.VK_ENTER) login();
+		}
+	});
     panel.add(pfPassword, cs);
     panel.setBorder(new LineBorder(Color.GRAY));
 
     btnLogin = new JButton("Sign in");
 
     btnLogin.addActionListener(new ActionListener() {
-
       public void actionPerformed(ActionEvent e) {
-        if (GT_Notes.ur.login(getUsername(), getPassword())) {
-          succeeded = true;
-          dispose();
-        } else {
-          JOptionPane.showMessageDialog(LoginDialog.this, "Invalid username and/or password.", "Authentication error",
-              JOptionPane.ERROR_MESSAGE);
-          // reset username and password
-          tfUsername.setText("");
-          pfPassword.setText("");
-          succeeded = false;
-          attempts++;
-          if(attempts >= 3) {
-            JOptionPane.showMessageDialog(LoginDialog.this, attempts + " incorrect attempts. (Waiting foi " + attempts + "seconds.", "Too many incorrect attempts",
-                JOptionPane.ERROR_MESSAGE);
-            try {
-              Thread.sleep(attempts * 1000);
-            } catch (InterruptedException e1) {
-              e1.printStackTrace();
-            } 
-          } 
-        }
+        login();
       }
     });
     btnCancel = new JButton("Cancel");
@@ -119,5 +104,29 @@ public class LoginDialog extends JDialog {
 
   public boolean isSucceeded() {
     return succeeded;
+  }
+  
+  private void login() {
+	  if (GT_Notes.ur.login(getUsername(), getPassword())) {
+          succeeded = true;
+          dispose();
+        } else {
+          JOptionPane.showMessageDialog(LoginDialog.this, "Invalid username and/or password.", "Authentication error",
+              JOptionPane.ERROR_MESSAGE);
+          // reset username and password
+          tfUsername.setText("");
+          pfPassword.setText("");
+          succeeded = false;
+          attempts++;
+          if(attempts >= 3) {
+            JOptionPane.showMessageDialog(LoginDialog.this, attempts + " incorrect attempts. (Waiting foi " + attempts + "seconds.", "Too many incorrect attempts",
+                JOptionPane.ERROR_MESSAGE);
+            try {
+              Thread.sleep(attempts * 1000);
+            } catch (InterruptedException e) {
+              e.printStackTrace();
+            } 
+          } 
+        }
   }
 }
