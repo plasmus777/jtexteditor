@@ -52,7 +52,7 @@ public class UserRegistry {
 						for(String x: openedNotes) {
 							if(x != null && !x.equals("")) {
 								NotePanel p = new NotePanel(u.darkMode());
-								p.abrirAuto(x);
+								p.autoOpen(x);
 								numberOfFiles++;
 							}
 						}
@@ -97,23 +97,23 @@ public class UserRegistry {
 			File f = new File("users");
 			if(!f.exists())f.mkdir();
 			
-			for(File x: f.listFiles(new FilenameFilter() {
-			    public boolean accept(File dir, String name) {
-			        return name.toLowerCase().endsWith(".gt");
-			    }
-			})) {
-				
-				FileInputStream fis = new FileInputStream(x);
-				BufferedInputStream bis = new BufferedInputStream(fis);
-				ObjectInputStream ois = new ObjectInputStream(bis);
-				
-				User u = (User)ois.readObject();
-				users.add(u);
-				
-				ois.close();
-				bis.close();
-				fis.close();
-			}
+				for(File x: f.listFiles(new FilenameFilter() {
+				    public boolean accept(File dir, String name) {
+				        return name.toLowerCase().endsWith(".gt");
+				    }
+				})) {
+					
+					FileInputStream fis = new FileInputStream(x);
+					BufferedInputStream bis = new BufferedInputStream(fis);
+					ObjectInputStream ois = new ObjectInputStream(bis);
+					
+					User u = (User)ois.readObject();
+					users.add(u);
+					
+					ois.close();
+					bis.close();
+					fis.close();
+				}
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}

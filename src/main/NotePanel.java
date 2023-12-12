@@ -97,7 +97,7 @@ public class NotePanel extends JPanel {
 		GT_Notes.ur.saveNotesFromCurrentUser();
 	}
 	
-	public void abrirAuto(String path) {
+	public void autoOpen(String path) {
 		if(path == null || path.equals(""))return;
 		try {
 			File f = new File(path);
@@ -247,7 +247,6 @@ public class NotePanel extends JPanel {
 				return;
 			case KeyEvent.VK_T:
 				GT_Notes.addNote(new NotePanel(GT_Notes.darkMode()), "New Document");
-				GT_Notes.tabbedPane.setSelectedIndex(GT_Notes.tabbedPane.getSelectedIndex() + 1);
 				return;
 			case KeyEvent.VK_W:
 				if(GT_Notes.getCurrentNote().hasChanges) {

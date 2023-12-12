@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.Box;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -84,7 +85,7 @@ public class GT_Notes extends JFrame {
 					
 					if(args != null && args.length >= 1) {
 						NotePanel n = new NotePanel(darkMode());
-						n.abrirAuto(args[0]);
+						n.autoOpen(args[0]);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -139,7 +140,7 @@ public class GT_Notes extends JFrame {
 			}
 		});
 		ur.loadUsers();
-		setTitle("Notes - version 1.0");
+		setTitle("GT Notes - version 1.0");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 450, 420);
 		contentPane = new JPanel();
@@ -316,6 +317,10 @@ public class GT_Notes extends JFrame {
 		
 		tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, previousKeys);
 		tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, nextKeys);
+		
+		InputMap inputMap = tabbedPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+		inputMap.put(previous, "navigatePrevious");
+		inputMap.put(next, "navigateNext");
 	  }
 	
 	public static NotePanel getCurrentNote() {
@@ -335,6 +340,7 @@ public class GT_Notes extends JFrame {
 	public static void addNote(NotePanel p, String name) {
 		if(darkMode())p.setDark(true);
 		tabbedPane.add(p, name);
+		tabbedPane.setSelectedComponent(p);
 		if(ur.getCurrentUser() != null)ur.addNoteToCurrentUser(p.getFilePath());
 		ur.saveUsers();
 		ur.saveNotesFromCurrentUser();
