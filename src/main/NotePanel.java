@@ -217,6 +217,10 @@ public class NotePanel extends JPanel {
 	     }
 	}
 	
+	public void delete() {
+		textArea.replaceSelection("");
+	}
+	
 	public boolean isNewFile() {
 		return isNewFile;
 	}
@@ -283,6 +287,11 @@ public class NotePanel extends JPanel {
 				return;
 			}
 		}
+		
+		if(arg0.getKeyCode() == KeyEvent.VK_DELETE) {
+			delete();
+		}
+		
 		if(!arg0.isActionKey()) {
 			hasChanges = true;
 		}

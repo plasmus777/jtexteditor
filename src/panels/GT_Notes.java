@@ -72,6 +72,7 @@ public class GT_Notes extends JFrame {
 	private JMenuItem mntmEditarFonte = new JMenuItem("Edit font");
 	private Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
 	private static JCheckBoxMenuItem chckbxmntmDarkTheme;
+	private final JMenuItem mntmNewMenuItem_9 = new JMenuItem("Delete");
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -250,6 +251,13 @@ public class GT_Notes extends JFrame {
 			}
 		});
 		mnEditar.add(mntmNewMenuItem_8);
+		mntmNewMenuItem_9.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(getCurrentNote() != null)getCurrentNote().delete();
+			}
+		});
+		
+		mnEditar.add(mntmNewMenuItem_9);
 		
 		toolBar.add(mnFormatar);
 		
