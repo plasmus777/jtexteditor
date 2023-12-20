@@ -8,6 +8,7 @@ import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.Document;
+import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
@@ -206,6 +207,16 @@ public class NotePanel extends JPanel {
 	     }
 	}
 	
+	public void redo() {
+		try {
+			 if(um.canRedo()) {
+				 um.redo();
+			 }
+		 } catch (CannotRedoException exp) {
+			 exp.printStackTrace();
+	     }
+	}
+	
 	public boolean isNewFile() {
 		return isNewFile;
 	}
@@ -261,6 +272,9 @@ public class NotePanel extends JPanel {
 				return;
 			case KeyEvent.VK_Z:
 				 undo();
+				return;
+			case KeyEvent.VK_Y:
+				 redo();
 				return;
 			case KeyEvent.VK_F:
 				GT_Notes.search.setVisible(true);

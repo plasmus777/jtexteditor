@@ -243,6 +243,14 @@ public class GT_Notes extends JFrame {
 		});
 		mnEditar.add(mntmDesfazer);
 		
+		JMenuItem mntmNewMenuItem_8 = new JMenuItem("Redo");
+		mntmNewMenuItem_8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(getCurrentNote() != null)getCurrentNote().redo();
+			}
+		});
+		mnEditar.add(mntmNewMenuItem_8);
+		
 		toolBar.add(mnFormatar);
 		
 		toolBar.add(mnNewMenu);
