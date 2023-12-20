@@ -282,7 +282,7 @@ public class GT_Notes extends JFrame {
 		mntmNewMenuItem_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-			        Desktop.getDesktop().browse(new URL("https://github.com/plasmus777/jtexteditor/issues").toURI());
+			        Desktop.getDesktop().browse(new URL("https://github.com/plasmus777/jtexteditor/issues/new?title=Problema+Encontrado&projects=plasmus777").toURI());
 			    } catch (Exception exc) {
 			    	JOptionPane.showMessageDialog(null,"Could not load the issues webpage.", "An error ocurred.", 0);
 			        exc.printStackTrace();
