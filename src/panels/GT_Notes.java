@@ -73,6 +73,7 @@ public class GT_Notes extends JFrame {
 	private Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
 	private static JCheckBoxMenuItem chckbxmntmDarkTheme;
 	private final JMenuItem mntmNewMenuItem_9 = new JMenuItem("Delete");
+	private final JMenuItem mntmNewMenuItem_10 = new JMenuItem("Search/Replace...");
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -106,25 +107,7 @@ public class GT_Notes extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				while(getCurrentNote() != null) {
-					if(getCurrentNote().hasChanges) {
-						int option = JOptionPane.showConfirmDialog(null, "Do you want to save all changes before exiting?", "Document not saved", JOptionPane.YES_NO_CANCEL_OPTION);
-						if(option == 0) getCurrentNote().salvar();
-						else if (option == 2)return;
-					}
-					
-					if(tabbedPane.getTabCount() == 1) {
-						removeCurrentNote(false);
-						break;
-					} else {
-						removeCurrentNote(false);
-					}
-				}
-				
-				ur.saveUsers();
-				ur.saveNotesFromCurrentUser();
-				System.out.println("Window closed.");
-				System.exit(0);	
+				exit();	
 			}
 		});
 		addComponentListener(new ComponentAdapter() {
@@ -187,10 +170,10 @@ public class GT_Notes extends JFrame {
 		mntmFecharAba.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(getCurrentNote().hasChanges) {
-					int option = JOptionPane.showConfirmDialog(null, "Do you want to save all changes before exiting?", "Document not saved", JOptionPane.YES_NO_OPTION);
+					int option = JOptionPane.showConfirmDialog(null, "Do you want to save all changes before exiting?", "Document not saved", JOptionPane.YES_NO_CANCEL_OPTION);
 					if(option == 0) {
 						if(getCurrentNote() != null)getCurrentNote().salvar();
-					}
+					} else if (option == 2)return;
 				}
 				tabbedPane.remove(tabbedPane.getSelectedIndex());
 				ur.saveUsers();
@@ -218,17 +201,7 @@ public class GT_Notes extends JFrame {
 		mnArquivo.add(mntmNewMenuItem_4);
 		mntmNewMenuItem_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(getCurrentNote() != null) {
-					if(getCurrentNote().hasChanges) {
-						int option = JOptionPane.showConfirmDialog(null, "Do you want to save all changes before exiting?", "Document not saved", JOptionPane.YES_NO_OPTION);
-						if(option == 0) {
-							getCurrentNote().salvar();
-						}
-					}
-				}
-				ur.saveUsers();
-				ur.saveNotesFromCurrentUser();
-				System.exit(0);
+				exit();
 			}
 		});
 		
@@ -258,6 +231,13 @@ public class GT_Notes extends JFrame {
 		});
 		
 		mnEditar.add(mntmNewMenuItem_9);
+		mntmNewMenuItem_10.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				search.setVisible(true);
+			}
+		});
+		
+		mnEditar.add(mntmNewMenuItem_10);
 		
 		toolBar.add(mnFormatar);
 		
@@ -456,5 +436,27 @@ public class GT_Notes extends JFrame {
 	            }
 	        }
 	    }
+	}
+	
+	public void exit() {
+		while(getCurrentNote() != null) {
+			if(getCurrentNote().hasChanges) {
+				int option = JOptionPane.showConfirmDialog(null, "Do you want to save all changes before exiting?", "Document not saved", JOptionPane.YES_NO_CANCEL_OPTION);
+				if(option == 0) getCurrentNote().salvar();
+				else if (option == 2)return;
+			}
+			
+			if(tabbedPane.getTabCount() == 1) {
+				removeCurrentNote(false);
+				break;
+			} else {
+				removeCurrentNote(false);
+			}
+		}
+		
+		ur.saveUsers();
+		ur.saveNotesFromCurrentUser();
+		System.out.println("Window closed.");
+		System.exit(0);
 	}
 }
