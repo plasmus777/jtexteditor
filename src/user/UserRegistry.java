@@ -71,10 +71,11 @@ public class UserRegistry {
 	
 	public void saveUsers() {
 		try {
-			File a = new File("users");
-			if(!a.exists())a.mkdir();
+			String appdata = System.getenv("APPDATA");
+			File a = new File(appdata + File.separator + "GT_Notes" + File.separator + "users");
+			if(!a.exists())a.mkdirs();
 			for(User u: users) {
-				File f = new File("users" + File.separator + u.getName() + ".gt");
+				File f = new File(appdata + File.separator + "GT_Notes" + File.separator + "users" + File.separator + u.getName() + ".gt");
 				if(!f.exists())f.createNewFile();
 				
 				FileOutputStream fos = new FileOutputStream(f);
@@ -94,8 +95,11 @@ public class UserRegistry {
 	
 	public void loadUsers() {
 		try {
-			File f = new File("users");
-			if(!f.exists())f.mkdir();
+			String appdata = System.getenv("APPDATA");
+			File f = new File(appdata + File.separator + "GT_Notes" + File.separator + "users");
+			if(!f.exists()) {
+				if(!f.mkdir())return;
+			}
 			
 				for(File x: f.listFiles(new FilenameFilter() {
 				    public boolean accept(File dir, String name) {
@@ -122,7 +126,8 @@ public class UserRegistry {
 	public void saveNotesFromCurrentUser() {
 		if(getCurrentUser() == null)return;
 		try {
-			File f = new File("users" + File.separator + getCurrentUser().getName() + ".notes");
+			String appdata = System.getenv("APPDATA");
+			File f = new File(appdata + File.separator + "GT_Notes" + File.separator + "users" + File.separator + getCurrentUser().getName() + ".notes");
 			if(!f.exists())f.createNewFile();
 			
 			FileWriter fw = new FileWriter(f);
@@ -141,7 +146,8 @@ public class UserRegistry {
 	public void loadNotesFromCurrentUser() {
 		if(getCurrentUser() == null)return;
 		try {
-			File f = new File("users" + File.separator + getCurrentUser().getName() + ".notes");
+			String appdata = System.getenv("APPDATA");
+			File f = new File(appdata + File.separator + "GT_Notes" + File.separator + "users" + File.separator + getCurrentUser().getName() + ".notes");
 			if(!f.exists())f.createNewFile();
 			
 			BufferedReader br = new BufferedReader(new FileReader(f));

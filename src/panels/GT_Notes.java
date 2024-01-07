@@ -64,7 +64,7 @@ public class GT_Notes extends JFrame {
 	private final JMenuItem mntmNewMenuItem_4 = new JMenuItem("Save as...");
 	private final JMenuItem mntmNewMenuItem_7 = new JMenuItem("Exit");
 	private final JMenu mnEditar = new JMenu("Edit");
-	private final JMenu mnFormatar = new JMenu("Format");
+	private final JMenu mnInserir = new JMenu("Insert");
 	private final JMenu mnNewMenu = new JMenu("Display");
 	private final JMenu mnAjuda = new JMenu("Help");
 	public static JTabbedPane tabbedPane;
@@ -74,6 +74,7 @@ public class GT_Notes extends JFrame {
 	private static JCheckBoxMenuItem chckbxmntmDarkTheme;
 	private final JMenuItem mntmNewMenuItem_9 = new JMenuItem("Delete");
 	private final JMenuItem mntmNewMenuItem_10 = new JMenuItem("Search/Replace...");
+	private final Component horizontalGlue_1 = Box.createHorizontalGlue();
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -239,7 +240,7 @@ public class GT_Notes extends JFrame {
 		
 		mnEditar.add(mntmNewMenuItem_10);
 		
-		toolBar.add(mnFormatar);
+		toolBar.add(mnInserir);
 		
 		toolBar.add(mnNewMenu);
 		mntmEditarFonte.addActionListener(new ActionListener() {
@@ -278,7 +279,7 @@ public class GT_Notes extends JFrame {
 		mntmNewMenuItem_6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-			        Desktop.getDesktop().browse(new URL("https://github.com/plasmus777/jtexteditor/issues/new?title=Problema+Encontrado&projects=plasmus777").toURI());
+			        Desktop.getDesktop().browse(new URL("https://github.com/plasmus777/jtexteditor/issues/new?title=Found+Issue&projects=plasmus777").toURI());
 			    } catch (Exception exc) {
 			    	JOptionPane.showMessageDialog(null,"Could not load the issues webpage.", "An error ocurred.", 0);
 			        exc.printStackTrace();
@@ -287,15 +288,23 @@ public class GT_Notes extends JFrame {
 		});
 		mnAjuda.add(mntmNewMenuItem_6);
 		
-		btnUser = new JButton("Sign in");
+		JMenuItem mntmNewMenuItem_11 = new JMenuItem("Keyboard Shortcuts");
+		mntmNewMenuItem_11.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null,"[Ctrl + T] - Creates a new empty document\n"
+						+ "[Ctrl + W] - Closes the current document\n", "Keyboart Shortcuts", 1);
+			}
+		});
+		mnAjuda.add(mntmNewMenuItem_11);
+		
+		btnUser = new JButton("User");
 		btnUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				login.setVisible(true);
 			}
 		});
 		
-		Component horizontalGlue = Box.createHorizontalGlue();
-		toolBar.add(horizontalGlue);
+		toolBar.add(horizontalGlue_1);
 		toolBar.add(btnUser);
 		
 		toolBar.add(rigidArea);
